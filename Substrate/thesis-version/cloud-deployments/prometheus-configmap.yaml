@@ -1,0 +1,120 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-config
+  namespace: monitoring
+data:
+  prometheus.yml: |2
+    global:
+      scrape_interval:     15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+      evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
+      # scrape_timeout is set to the global default (10s).
+
+    # Define 24 scrape configs
+    rule_files:
+    scrape_configs:
+      - job_name: "node-0"
+        scrape_interval: 1000ms
+        static_configs:
+          - targets: ["substrate-0.multichain-net:9615"]
+      - job_name: "node-1"
+        scrape_interval: 1000ms
+        static_configs:
+          - targets: ["substrate-1.multichain-net:9615"]
+      - job_name: "node-2"
+        scrape_interval: 1000ms
+        static_configs:
+          - targets: ["substrate-2.multichain-net:9615"]
+      - job_name: "node-3"
+        scrape_interval: 1000ms
+        static_configs:
+          - targets: ["substrate-3.multichain-net:9615"]
+      - job_name: "node-4"
+        scrape_interval: 1000ms
+        static_configs:
+          - targets: ["substrate-4.multichain-net:9615"]
+      - job_name: "node-4"
+        scrape_interval: 1000ms
+        static_configs:
+          - targets: ["substrate-4.multichain-net:9615"]
+      - job_name: "node-5"
+        scrape_interval: 1000ms
+        static_configs:
+          - targets: ["substrate-5.multichain-net:9615"]
+      - job_name: "node-6"
+        scrape_interval: 1000ms
+        static_configs:
+          - targets: ["substrate-6.multichain-net:9615"]
+      - job_name: "node-7"
+        scrape_interval: 1000ms
+        static_configs:
+          - targets: ["substrate-7.multichain-net:9615"]
+      - job_name: "node-8"
+        scrape_interval: 1000ms
+        static_configs:
+          - targets: ["substrate-8.multichain-net:9615"]
+      - job_name: "node-9"
+        scrape_interval: 1000ms
+        static_configs:
+          - targets: ["substrate-9.multichain-net:9615"]
+      - job_name: "node-10"
+        scrape_interval: 1000ms
+        static_configs:
+          - targets: ["substrate-10.multichain-net:9615"]
+      - job_name: "node-11"
+        scrape_interval: 1000ms
+        static_configs:
+          - targets: ["substrate-11.multichain-net:9615"]
+      - job_name: "node-12"
+        scrape_interval: 1000ms
+        static_configs:
+          - targets: ["substrate-12.multichain-net:9615"]
+      - job_name: "node-13"
+        scrape_interval: 1000ms
+        static_configs:
+          - targets: ["substrate-13.multichain-net:9615"]
+      - job_name: "node-14"
+        scrape_interval: 1000ms
+        static_configs:
+          - targets: ["substrate-14.multichain-net:9615"]
+      - job_name: "node-15"
+        scrape_interval: 1000ms
+        static_configs:
+          - targets: ["substrate-15.multichain-net:9615"]
+      - job_name: "node-16"
+        scrape_interval: 1000ms
+        static_configs:
+          - targets: ["substrate-16.multichain-net:9615"]
+      - job_name: "node-17"
+        scrape_interval: 1000ms
+        static_configs:
+          - targets: ["substrate-17.multichain-net:9615"]
+      - job_name: "node-18"
+        scrape_interval: 1000ms
+        static_configs:
+          - targets: ["substrate-18.multichain-net:9615"]
+      - job_name: "node-19"
+        scrape_interval: 1000ms
+        static_configs:
+          - targets: ["substrate-19.multichain-net:9615"]
+      - job_name: "node-20"
+        scrape_interval: 1000ms
+        static_configs:
+          - targets: ["substrate-20.multichain-net:9615"]
+      - job_name: "node-21"
+        scrape_interval: 1000ms
+        static_configs:
+          - targets: ["substrate-21.multichain-net:9615"]
+      - job_name: "node-22"
+        scrape_interval: 1000ms
+        static_configs:
+          - targets: ["substrate-22.multichain-net:9615"]
+      - job_name: "node-23"
+        scrape_interval: 1000ms
+        static_configs:
+          - targets: ["substrate-23.multichain-net:9615"]
+      - job_name: "node-24"
+        scrape_interval: 1000ms
+        static_configs:
+          - targets: ["substrate-24.multichain-net:9615"]
+      
