@@ -1,5 +1,5 @@
-choose_test_prefix = "test_4" 
-collator_format_1 = "0collator" 
+choose_test_prefix = "test_1" 
+collator_format_1 = "4nb_nodes" 
 
 ######################################## output tps ##################################################
 reset

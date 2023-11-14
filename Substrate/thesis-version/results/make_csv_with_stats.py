@@ -105,4 +105,5 @@ def generate_csv(prefix_path, parachain, nb_collators):
         writer.writerows(results)
 
 
-generate_csv("test_1", "", "3nb_nodes")
+generate_csv("test_1", "", "4nb_nodes")
+generate_csv("test_1", "", "8nb_nodes")

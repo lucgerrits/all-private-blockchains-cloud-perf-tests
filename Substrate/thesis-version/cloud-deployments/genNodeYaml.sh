@@ -8,7 +8,7 @@ source config.sh
 rm -rf customSpec.json
 rm -rf customSpecRaw.json
 IMAGE_TAG=projetsim/sim-node-coins-2023:latest
-NBNODES=3
+NBNODES=$1
 #list of validators available
 #Max 6 validator for the moment
 #array built with generateKeys.sh script
@@ -418,42 +418,42 @@ chainSpecRaw=$(cat customSpecRaw.json) #write changes to file
 
 
 
-cat << EOF
-####################################### BENCHMARK MACHINE #########################
+# cat << EOF
+# ####################################### BENCHMARK MACHINE #########################
 
-- apiVersion: apps/v1
-  kind: Deployment
-  metadata:
-    name: benchmark
-    namespace: $NAMESPACE
-  spec:
-    replicas: 1
-    selector:
-        matchLabels:
-          name: benchmark-deployment
-    template:
-      metadata:
-        labels:
-          name: benchmark-deployment
-          serviceSelector: benchmark-deployment
-      spec:
-        hostAliases:
-        - ip: "185.52.32.4"
-          hostnames:
-          - "substrate-ws.unice.cust.tasfrance.com"
-        containers:
-        - name: substrate-sim-transaction-js
-          image: projetsim/substrate-sim-transaction-js:latest
-          command:
-            - "sleep"
-            - "604800"
-          resources:
-            limits:
-              cpu: "30"
-              memory: "10Gi"
-            requests:
-              cpu: "30"
-              memory: "10Gi"
-          imagePullPolicy: Always
-        restartPolicy: Always
-EOF
+# - apiVersion: apps/v1
+#   kind: Deployment
+#   metadata:
+#     name: benchmark
+#     namespace: $NAMESPACE
+#   spec:
+#     replicas: 1
+#     selector:
+#         matchLabels:
+#           name: benchmark-deployment
+#     template:
+#       metadata:
+#         labels:
+#           name: benchmark-deployment
+#           serviceSelector: benchmark-deployment
+#       spec:
+#         hostAliases:
+#         - ip: "185.52.32.4"
+#           hostnames:
+#           - "substrate-ws.unice.cust.tasfrance.com"
+#         containers:
+#         - name: benchmark-container
+#           image: ubuntu:jammy
+#           command:
+#             - "sleep"
+#             - "604800"
+#           resources:
+#             limits:
+#               cpu: "30"
+#               memory: "10Gi"
+#             requests:
+#               cpu: "30"
+#               memory: "10Gi"
+#           imagePullPolicy: Always
+#         restartPolicy: Always
+# EOF
