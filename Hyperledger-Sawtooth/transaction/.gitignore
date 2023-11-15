@@ -1,0 +1,14 @@
+
+.vscode/ipch
+*.key
+*.o
+transaction
+.vscode/
+*.out
+protos_pb_h/*
+*.csv
+*.save
+*.a
+*.txt
+*.raw
+multihash/

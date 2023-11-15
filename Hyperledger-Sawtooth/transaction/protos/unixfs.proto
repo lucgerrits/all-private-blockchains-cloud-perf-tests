@@ -1,0 +1,9 @@
+syntax = "proto2";
+
+package unixfs.element.pb;
+
+import "unixfs_original.proto";
+
+message Element {
+	required unixfs.pb.Data dataelement = 1;
+}
