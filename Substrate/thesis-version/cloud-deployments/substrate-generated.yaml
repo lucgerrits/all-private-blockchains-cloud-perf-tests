@@ -1923,6 +1923,1926 @@ items:
      requests:
         storage: 45Gi
 
+# --------------------------=== POD DEPLOYMENT 12 ===--------------------------
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: node-12
+    namespace: multichain-net
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        name: substrate-12
+    template:
+      metadata:
+        labels:
+          name: substrate-12
+          serviceSelector: substrate-node
+      spec:
+        securityContext:
+          fsGroup: 101
+        containers:
+          - name: substrate-node
+            image: projetsim/sim-node-coins-2023:latest
+            resources:
+              requests:
+                memory: "10Gi"
+                cpu: "4"
+                ephemeral-storage: "1500Mi"
+              limits:
+                memory: "11Gi"
+                cpu: "4"
+                ephemeral-storage: "2Gi"
+            ports:
+              - name: p2p
+                containerPort: 30333
+              - name: websocket
+                containerPort: 9944
+              - name: rpc
+                containerPort: 9933
+              - name: prometheus
+                containerPort: 9615
+            command:
+              - bash
+            args:
+              - -c
+              - |
+                    rm -rf /datas/substrate-12/*;
+                    /node-template key insert \
+                        --base-path /datas/substrate-12 \
+                        --chain local \
+                        --key-type aura \
+                        --scheme Sr25519 \
+                        --suri "0xfc9c71df7b86f1820d2819a19f84a3c86eccad463e387fb1b27846f0af4887de";
+                    /node-template key insert \
+                        --base-path /datas/substrate-12 \
+                        --chain local \
+                        --key-type gran \
+                        --scheme Ed25519 \
+                        --suri "0xfc9c71df7b86f1820d2819a19f84a3c86eccad463e387fb1b27846f0af4887de";
+                    ls -l /datas/substrate-12/chains/local_testnet/keystore;
+                    RUST_LOG=runtime=debug
+                    /node-template \
+                        --base-path /datas/substrate-12 \
+                        --name Node12 \
+                        --chain /genesis/customSpecRaw.json \
+                        --keystore-path /datas/substrate-12/chains/local_testnet/keystore/ \
+                        --node-key fc9c71df7b86f1820d2819a19f84a3c86eccad463e387fb1b27846f0af4887de \
+                        --port 30333 \
+                        --ws-port 9944 \
+                        --rpc-port 9933 \
+                        --unsafe-ws-external \
+                        --unsafe-rpc-external \
+                        --rpc-cors=all \
+                        --prometheus-external \
+                        --log info \
+                        --wasm-execution Compiled \
+                        --ws-max-connections 1000 \
+                        --pool-limit 10000 \
+                        --pool-kbytes 125000 \
+                        --max-runtime-instances 100 \
+                        --state-cache-size 2147483648 \
+                        --validator \
+                        --bootnodes /ip4/$SUBSTRATE_0_SERVICE_HOST/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp
+                    
+            volumeMounts:
+              - name: substrate-data-12
+                mountPath: /datas/substrate-12
+              - name: substrate-genesis-12
+                mountPath: /genesis/
+
+        volumes:
+          - name: substrate-data-12
+            persistentVolumeClaim:
+              claimName: substrate-data-12
+          - name: substrate-genesis-12
+            configMap:
+              name: chain-spec
+              items:
+              - key: customSpecRaw.json
+                path: customSpecRaw.json
+
+#---------------------------------=NODES SERVICES 12=---------------------------------------
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: substrate-12
+    namespace: multichain-net
+  spec:
+    type: ClusterIP
+    selector:
+      name: substrate-12
+    ports:
+      - name: "30333"
+        protocol: TCP
+        port: 30333
+        targetPort: 30333
+      - name: "9944"
+        protocol: TCP
+        port: 9944
+        targetPort: 9944
+      - name: "9933"
+        protocol: TCP
+        port: 9933
+        targetPort: 9933
+      - name: "9615"
+        protocol: TCP
+        port: 9615
+        targetPort: 9615
+#---------------------------------=NODES PERSISTANT VOLUME 12=---------------------------------------
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    name: substrate-12
+    labels:
+      type: local
+  spec:
+    storageClassName: manual
+    capacity:
+      storage: 50Gi
+    accessModes:
+      - ReadWriteOnce
+    persistentVolumeReclaimPolicy: Recycle
+    hostPath:
+      path: "/datas/substrate-12"
+#--------------------------=PERSISTENT VOLUME CLAIM 12=------------------------------
+
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    labels:
+      app: substrate-data
+    name: substrate-data-12
+    namespace: multichain-net
+  spec:
+    storageClassName: manual
+    accessModes:
+    - ReadWriteOnce
+    resources:
+     requests:
+        storage: 45Gi
+
+# --------------------------=== POD DEPLOYMENT 13 ===--------------------------
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: node-13
+    namespace: multichain-net
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        name: substrate-13
+    template:
+      metadata:
+        labels:
+          name: substrate-13
+          serviceSelector: substrate-node
+      spec:
+        securityContext:
+          fsGroup: 101
+        containers:
+          - name: substrate-node
+            image: projetsim/sim-node-coins-2023:latest
+            resources:
+              requests:
+                memory: "10Gi"
+                cpu: "4"
+                ephemeral-storage: "1500Mi"
+              limits:
+                memory: "11Gi"
+                cpu: "4"
+                ephemeral-storage: "2Gi"
+            ports:
+              - name: p2p
+                containerPort: 30333
+              - name: websocket
+                containerPort: 9944
+              - name: rpc
+                containerPort: 9933
+              - name: prometheus
+                containerPort: 9615
+            command:
+              - bash
+            args:
+              - -c
+              - |
+                    rm -rf /datas/substrate-13/*;
+                    /node-template key insert \
+                        --base-path /datas/substrate-13 \
+                        --chain local \
+                        --key-type aura \
+                        --scheme Sr25519 \
+                        --suri "0x7afdfa2cbe8f836a257842d3e5972d546b03015058d996f7b54f1d031f043c5a";
+                    /node-template key insert \
+                        --base-path /datas/substrate-13 \
+                        --chain local \
+                        --key-type gran \
+                        --scheme Ed25519 \
+                        --suri "0x7afdfa2cbe8f836a257842d3e5972d546b03015058d996f7b54f1d031f043c5a";
+                    ls -l /datas/substrate-13/chains/local_testnet/keystore;
+                    RUST_LOG=runtime=debug
+                    /node-template \
+                        --base-path /datas/substrate-13 \
+                        --name Node13 \
+                        --chain /genesis/customSpecRaw.json \
+                        --keystore-path /datas/substrate-13/chains/local_testnet/keystore/ \
+                        --node-key 7afdfa2cbe8f836a257842d3e5972d546b03015058d996f7b54f1d031f043c5a \
+                        --port 30333 \
+                        --ws-port 9944 \
+                        --rpc-port 9933 \
+                        --unsafe-ws-external \
+                        --unsafe-rpc-external \
+                        --rpc-cors=all \
+                        --prometheus-external \
+                        --log info \
+                        --wasm-execution Compiled \
+                        --ws-max-connections 1000 \
+                        --pool-limit 10000 \
+                        --pool-kbytes 125000 \
+                        --max-runtime-instances 100 \
+                        --state-cache-size 2147483648 \
+                        --validator \
+                        --bootnodes /ip4/$SUBSTRATE_0_SERVICE_HOST/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp
+                    
+            volumeMounts:
+              - name: substrate-data-13
+                mountPath: /datas/substrate-13
+              - name: substrate-genesis-13
+                mountPath: /genesis/
+
+        volumes:
+          - name: substrate-data-13
+            persistentVolumeClaim:
+              claimName: substrate-data-13
+          - name: substrate-genesis-13
+            configMap:
+              name: chain-spec
+              items:
+              - key: customSpecRaw.json
+                path: customSpecRaw.json
+
+#---------------------------------=NODES SERVICES 13=---------------------------------------
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: substrate-13
+    namespace: multichain-net
+  spec:
+    type: ClusterIP
+    selector:
+      name: substrate-13
+    ports:
+      - name: "30333"
+        protocol: TCP
+        port: 30333
+        targetPort: 30333
+      - name: "9944"
+        protocol: TCP
+        port: 9944
+        targetPort: 9944
+      - name: "9933"
+        protocol: TCP
+        port: 9933
+        targetPort: 9933
+      - name: "9615"
+        protocol: TCP
+        port: 9615
+        targetPort: 9615
+#---------------------------------=NODES PERSISTANT VOLUME 13=---------------------------------------
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    name: substrate-13
+    labels:
+      type: local
+  spec:
+    storageClassName: manual
+    capacity:
+      storage: 50Gi
+    accessModes:
+      - ReadWriteOnce
+    persistentVolumeReclaimPolicy: Recycle
+    hostPath:
+      path: "/datas/substrate-13"
+#--------------------------=PERSISTENT VOLUME CLAIM 13=------------------------------
+
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    labels:
+      app: substrate-data
+    name: substrate-data-13
+    namespace: multichain-net
+  spec:
+    storageClassName: manual
+    accessModes:
+    - ReadWriteOnce
+    resources:
+     requests:
+        storage: 45Gi
+
+# --------------------------=== POD DEPLOYMENT 14 ===--------------------------
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: node-14
+    namespace: multichain-net
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        name: substrate-14
+    template:
+      metadata:
+        labels:
+          name: substrate-14
+          serviceSelector: substrate-node
+      spec:
+        securityContext:
+          fsGroup: 101
+        containers:
+          - name: substrate-node
+            image: projetsim/sim-node-coins-2023:latest
+            resources:
+              requests:
+                memory: "10Gi"
+                cpu: "4"
+                ephemeral-storage: "1500Mi"
+              limits:
+                memory: "11Gi"
+                cpu: "4"
+                ephemeral-storage: "2Gi"
+            ports:
+              - name: p2p
+                containerPort: 30333
+              - name: websocket
+                containerPort: 9944
+              - name: rpc
+                containerPort: 9933
+              - name: prometheus
+                containerPort: 9615
+            command:
+              - bash
+            args:
+              - -c
+              - |
+                    rm -rf /datas/substrate-14/*;
+                    /node-template key insert \
+                        --base-path /datas/substrate-14 \
+                        --chain local \
+                        --key-type aura \
+                        --scheme Sr25519 \
+                        --suri "0x180d569adbba08cc6f6bc0945df7919558251a7e15371872e93430df535c294a";
+                    /node-template key insert \
+                        --base-path /datas/substrate-14 \
+                        --chain local \
+                        --key-type gran \
+                        --scheme Ed25519 \
+                        --suri "0x180d569adbba08cc6f6bc0945df7919558251a7e15371872e93430df535c294a";
+                    ls -l /datas/substrate-14/chains/local_testnet/keystore;
+                    RUST_LOG=runtime=debug
+                    /node-template \
+                        --base-path /datas/substrate-14 \
+                        --name Node14 \
+                        --chain /genesis/customSpecRaw.json \
+                        --keystore-path /datas/substrate-14/chains/local_testnet/keystore/ \
+                        --node-key 180d569adbba08cc6f6bc0945df7919558251a7e15371872e93430df535c294a \
+                        --port 30333 \
+                        --ws-port 9944 \
+                        --rpc-port 9933 \
+                        --unsafe-ws-external \
+                        --unsafe-rpc-external \
+                        --rpc-cors=all \
+                        --prometheus-external \
+                        --log info \
+                        --wasm-execution Compiled \
+                        --ws-max-connections 1000 \
+                        --pool-limit 10000 \
+                        --pool-kbytes 125000 \
+                        --max-runtime-instances 100 \
+                        --state-cache-size 2147483648 \
+                        --validator \
+                        --bootnodes /ip4/$SUBSTRATE_0_SERVICE_HOST/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp
+                    
+            volumeMounts:
+              - name: substrate-data-14
+                mountPath: /datas/substrate-14
+              - name: substrate-genesis-14
+                mountPath: /genesis/
+
+        volumes:
+          - name: substrate-data-14
+            persistentVolumeClaim:
+              claimName: substrate-data-14
+          - name: substrate-genesis-14
+            configMap:
+              name: chain-spec
+              items:
+              - key: customSpecRaw.json
+                path: customSpecRaw.json
+
+#---------------------------------=NODES SERVICES 14=---------------------------------------
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: substrate-14
+    namespace: multichain-net
+  spec:
+    type: ClusterIP
+    selector:
+      name: substrate-14
+    ports:
+      - name: "30333"
+        protocol: TCP
+        port: 30333
+        targetPort: 30333
+      - name: "9944"
+        protocol: TCP
+        port: 9944
+        targetPort: 9944
+      - name: "9933"
+        protocol: TCP
+        port: 9933
+        targetPort: 9933
+      - name: "9615"
+        protocol: TCP
+        port: 9615
+        targetPort: 9615
+#---------------------------------=NODES PERSISTANT VOLUME 14=---------------------------------------
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    name: substrate-14
+    labels:
+      type: local
+  spec:
+    storageClassName: manual
+    capacity:
+      storage: 50Gi
+    accessModes:
+      - ReadWriteOnce
+    persistentVolumeReclaimPolicy: Recycle
+    hostPath:
+      path: "/datas/substrate-14"
+#--------------------------=PERSISTENT VOLUME CLAIM 14=------------------------------
+
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    labels:
+      app: substrate-data
+    name: substrate-data-14
+    namespace: multichain-net
+  spec:
+    storageClassName: manual
+    accessModes:
+    - ReadWriteOnce
+    resources:
+     requests:
+        storage: 45Gi
+
+# --------------------------=== POD DEPLOYMENT 15 ===--------------------------
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: node-15
+    namespace: multichain-net
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        name: substrate-15
+    template:
+      metadata:
+        labels:
+          name: substrate-15
+          serviceSelector: substrate-node
+      spec:
+        securityContext:
+          fsGroup: 101
+        containers:
+          - name: substrate-node
+            image: projetsim/sim-node-coins-2023:latest
+            resources:
+              requests:
+                memory: "10Gi"
+                cpu: "4"
+                ephemeral-storage: "1500Mi"
+              limits:
+                memory: "11Gi"
+                cpu: "4"
+                ephemeral-storage: "2Gi"
+            ports:
+              - name: p2p
+                containerPort: 30333
+              - name: websocket
+                containerPort: 9944
+              - name: rpc
+                containerPort: 9933
+              - name: prometheus
+                containerPort: 9615
+            command:
+              - bash
+            args:
+              - -c
+              - |
+                    rm -rf /datas/substrate-15/*;
+                    /node-template key insert \
+                        --base-path /datas/substrate-15 \
+                        --chain local \
+                        --key-type aura \
+                        --scheme Sr25519 \
+                        --suri "0x25e07ba7d4806c4119f4f379c26ca4f4094150ab33715017d717004a40d5d8fd";
+                    /node-template key insert \
+                        --base-path /datas/substrate-15 \
+                        --chain local \
+                        --key-type gran \
+                        --scheme Ed25519 \
+                        --suri "0x25e07ba7d4806c4119f4f379c26ca4f4094150ab33715017d717004a40d5d8fd";
+                    ls -l /datas/substrate-15/chains/local_testnet/keystore;
+                    RUST_LOG=runtime=debug
+                    /node-template \
+                        --base-path /datas/substrate-15 \
+                        --name Node15 \
+                        --chain /genesis/customSpecRaw.json \
+                        --keystore-path /datas/substrate-15/chains/local_testnet/keystore/ \
+                        --node-key 25e07ba7d4806c4119f4f379c26ca4f4094150ab33715017d717004a40d5d8fd \
+                        --port 30333 \
+                        --ws-port 9944 \
+                        --rpc-port 9933 \
+                        --unsafe-ws-external \
+                        --unsafe-rpc-external \
+                        --rpc-cors=all \
+                        --prometheus-external \
+                        --log info \
+                        --wasm-execution Compiled \
+                        --ws-max-connections 1000 \
+                        --pool-limit 10000 \
+                        --pool-kbytes 125000 \
+                        --max-runtime-instances 100 \
+                        --state-cache-size 2147483648 \
+                        --validator \
+                        --bootnodes /ip4/$SUBSTRATE_0_SERVICE_HOST/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp
+                    
+            volumeMounts:
+              - name: substrate-data-15
+                mountPath: /datas/substrate-15
+              - name: substrate-genesis-15
+                mountPath: /genesis/
+
+        volumes:
+          - name: substrate-data-15
+            persistentVolumeClaim:
+              claimName: substrate-data-15
+          - name: substrate-genesis-15
+            configMap:
+              name: chain-spec
+              items:
+              - key: customSpecRaw.json
+                path: customSpecRaw.json
+
+#---------------------------------=NODES SERVICES 15=---------------------------------------
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: substrate-15
+    namespace: multichain-net
+  spec:
+    type: ClusterIP
+    selector:
+      name: substrate-15
+    ports:
+      - name: "30333"
+        protocol: TCP
+        port: 30333
+        targetPort: 30333
+      - name: "9944"
+        protocol: TCP
+        port: 9944
+        targetPort: 9944
+      - name: "9933"
+        protocol: TCP
+        port: 9933
+        targetPort: 9933
+      - name: "9615"
+        protocol: TCP
+        port: 9615
+        targetPort: 9615
+#---------------------------------=NODES PERSISTANT VOLUME 15=---------------------------------------
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    name: substrate-15
+    labels:
+      type: local
+  spec:
+    storageClassName: manual
+    capacity:
+      storage: 50Gi
+    accessModes:
+      - ReadWriteOnce
+    persistentVolumeReclaimPolicy: Recycle
+    hostPath:
+      path: "/datas/substrate-15"
+#--------------------------=PERSISTENT VOLUME CLAIM 15=------------------------------
+
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    labels:
+      app: substrate-data
+    name: substrate-data-15
+    namespace: multichain-net
+  spec:
+    storageClassName: manual
+    accessModes:
+    - ReadWriteOnce
+    resources:
+     requests:
+        storage: 45Gi
+
+# --------------------------=== POD DEPLOYMENT 16 ===--------------------------
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: node-16
+    namespace: multichain-net
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        name: substrate-16
+    template:
+      metadata:
+        labels:
+          name: substrate-16
+          serviceSelector: substrate-node
+      spec:
+        securityContext:
+          fsGroup: 101
+        containers:
+          - name: substrate-node
+            image: projetsim/sim-node-coins-2023:latest
+            resources:
+              requests:
+                memory: "10Gi"
+                cpu: "4"
+                ephemeral-storage: "1500Mi"
+              limits:
+                memory: "11Gi"
+                cpu: "4"
+                ephemeral-storage: "2Gi"
+            ports:
+              - name: p2p
+                containerPort: 30333
+              - name: websocket
+                containerPort: 9944
+              - name: rpc
+                containerPort: 9933
+              - name: prometheus
+                containerPort: 9615
+            command:
+              - bash
+            args:
+              - -c
+              - |
+                    rm -rf /datas/substrate-16/*;
+                    /node-template key insert \
+                        --base-path /datas/substrate-16 \
+                        --chain local \
+                        --key-type aura \
+                        --scheme Sr25519 \
+                        --suri "0xce3828a98344a1f53ca9fb1a9a7701e7fd8cde4e2524d7b12e0b27fd3e004b42";
+                    /node-template key insert \
+                        --base-path /datas/substrate-16 \
+                        --chain local \
+                        --key-type gran \
+                        --scheme Ed25519 \
+                        --suri "0xce3828a98344a1f53ca9fb1a9a7701e7fd8cde4e2524d7b12e0b27fd3e004b42";
+                    ls -l /datas/substrate-16/chains/local_testnet/keystore;
+                    RUST_LOG=runtime=debug
+                    /node-template \
+                        --base-path /datas/substrate-16 \
+                        --name Node16 \
+                        --chain /genesis/customSpecRaw.json \
+                        --keystore-path /datas/substrate-16/chains/local_testnet/keystore/ \
+                        --node-key ce3828a98344a1f53ca9fb1a9a7701e7fd8cde4e2524d7b12e0b27fd3e004b42 \
+                        --port 30333 \
+                        --ws-port 9944 \
+                        --rpc-port 9933 \
+                        --unsafe-ws-external \
+                        --unsafe-rpc-external \
+                        --rpc-cors=all \
+                        --prometheus-external \
+                        --log info \
+                        --wasm-execution Compiled \
+                        --ws-max-connections 1000 \
+                        --pool-limit 10000 \
+                        --pool-kbytes 125000 \
+                        --max-runtime-instances 100 \
+                        --state-cache-size 2147483648 \
+                        --validator \
+                        --bootnodes /ip4/$SUBSTRATE_0_SERVICE_HOST/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp
+                    
+            volumeMounts:
+              - name: substrate-data-16
+                mountPath: /datas/substrate-16
+              - name: substrate-genesis-16
+                mountPath: /genesis/
+
+        volumes:
+          - name: substrate-data-16
+            persistentVolumeClaim:
+              claimName: substrate-data-16
+          - name: substrate-genesis-16
+            configMap:
+              name: chain-spec
+              items:
+              - key: customSpecRaw.json
+                path: customSpecRaw.json
+
+#---------------------------------=NODES SERVICES 16=---------------------------------------
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: substrate-16
+    namespace: multichain-net
+  spec:
+    type: ClusterIP
+    selector:
+      name: substrate-16
+    ports:
+      - name: "30333"
+        protocol: TCP
+        port: 30333
+        targetPort: 30333
+      - name: "9944"
+        protocol: TCP
+        port: 9944
+        targetPort: 9944
+      - name: "9933"
+        protocol: TCP
+        port: 9933
+        targetPort: 9933
+      - name: "9615"
+        protocol: TCP
+        port: 9615
+        targetPort: 9615
+#---------------------------------=NODES PERSISTANT VOLUME 16=---------------------------------------
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    name: substrate-16
+    labels:
+      type: local
+  spec:
+    storageClassName: manual
+    capacity:
+      storage: 50Gi
+    accessModes:
+      - ReadWriteOnce
+    persistentVolumeReclaimPolicy: Recycle
+    hostPath:
+      path: "/datas/substrate-16"
+#--------------------------=PERSISTENT VOLUME CLAIM 16=------------------------------
+
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    labels:
+      app: substrate-data
+    name: substrate-data-16
+    namespace: multichain-net
+  spec:
+    storageClassName: manual
+    accessModes:
+    - ReadWriteOnce
+    resources:
+     requests:
+        storage: 45Gi
+
+# --------------------------=== POD DEPLOYMENT 17 ===--------------------------
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: node-17
+    namespace: multichain-net
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        name: substrate-17
+    template:
+      metadata:
+        labels:
+          name: substrate-17
+          serviceSelector: substrate-node
+      spec:
+        securityContext:
+          fsGroup: 101
+        containers:
+          - name: substrate-node
+            image: projetsim/sim-node-coins-2023:latest
+            resources:
+              requests:
+                memory: "10Gi"
+                cpu: "4"
+                ephemeral-storage: "1500Mi"
+              limits:
+                memory: "11Gi"
+                cpu: "4"
+                ephemeral-storage: "2Gi"
+            ports:
+              - name: p2p
+                containerPort: 30333
+              - name: websocket
+                containerPort: 9944
+              - name: rpc
+                containerPort: 9933
+              - name: prometheus
+                containerPort: 9615
+            command:
+              - bash
+            args:
+              - -c
+              - |
+                    rm -rf /datas/substrate-17/*;
+                    /node-template key insert \
+                        --base-path /datas/substrate-17 \
+                        --chain local \
+                        --key-type aura \
+                        --scheme Sr25519 \
+                        --suri "0x5c5b73dd3c5557e34abd6e06c18b9dd0570ad1df7364107304c4b638e5616a02";
+                    /node-template key insert \
+                        --base-path /datas/substrate-17 \
+                        --chain local \
+                        --key-type gran \
+                        --scheme Ed25519 \
+                        --suri "0x5c5b73dd3c5557e34abd6e06c18b9dd0570ad1df7364107304c4b638e5616a02";
+                    ls -l /datas/substrate-17/chains/local_testnet/keystore;
+                    RUST_LOG=runtime=debug
+                    /node-template \
+                        --base-path /datas/substrate-17 \
+                        --name Node17 \
+                        --chain /genesis/customSpecRaw.json \
+                        --keystore-path /datas/substrate-17/chains/local_testnet/keystore/ \
+                        --node-key 5c5b73dd3c5557e34abd6e06c18b9dd0570ad1df7364107304c4b638e5616a02 \
+                        --port 30333 \
+                        --ws-port 9944 \
+                        --rpc-port 9933 \
+                        --unsafe-ws-external \
+                        --unsafe-rpc-external \
+                        --rpc-cors=all \
+                        --prometheus-external \
+                        --log info \
+                        --wasm-execution Compiled \
+                        --ws-max-connections 1000 \
+                        --pool-limit 10000 \
+                        --pool-kbytes 125000 \
+                        --max-runtime-instances 100 \
+                        --state-cache-size 2147483648 \
+                        --validator \
+                        --bootnodes /ip4/$SUBSTRATE_0_SERVICE_HOST/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp
+                    
+            volumeMounts:
+              - name: substrate-data-17
+                mountPath: /datas/substrate-17
+              - name: substrate-genesis-17
+                mountPath: /genesis/
+
+        volumes:
+          - name: substrate-data-17
+            persistentVolumeClaim:
+              claimName: substrate-data-17
+          - name: substrate-genesis-17
+            configMap:
+              name: chain-spec
+              items:
+              - key: customSpecRaw.json
+                path: customSpecRaw.json
+
+#---------------------------------=NODES SERVICES 17=---------------------------------------
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: substrate-17
+    namespace: multichain-net
+  spec:
+    type: ClusterIP
+    selector:
+      name: substrate-17
+    ports:
+      - name: "30333"
+        protocol: TCP
+        port: 30333
+        targetPort: 30333
+      - name: "9944"
+        protocol: TCP
+        port: 9944
+        targetPort: 9944
+      - name: "9933"
+        protocol: TCP
+        port: 9933
+        targetPort: 9933
+      - name: "9615"
+        protocol: TCP
+        port: 9615
+        targetPort: 9615
+#---------------------------------=NODES PERSISTANT VOLUME 17=---------------------------------------
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    name: substrate-17
+    labels:
+      type: local
+  spec:
+    storageClassName: manual
+    capacity:
+      storage: 50Gi
+    accessModes:
+      - ReadWriteOnce
+    persistentVolumeReclaimPolicy: Recycle
+    hostPath:
+      path: "/datas/substrate-17"
+#--------------------------=PERSISTENT VOLUME CLAIM 17=------------------------------
+
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    labels:
+      app: substrate-data
+    name: substrate-data-17
+    namespace: multichain-net
+  spec:
+    storageClassName: manual
+    accessModes:
+    - ReadWriteOnce
+    resources:
+     requests:
+        storage: 45Gi
+
+# --------------------------=== POD DEPLOYMENT 18 ===--------------------------
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: node-18
+    namespace: multichain-net
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        name: substrate-18
+    template:
+      metadata:
+        labels:
+          name: substrate-18
+          serviceSelector: substrate-node
+      spec:
+        securityContext:
+          fsGroup: 101
+        containers:
+          - name: substrate-node
+            image: projetsim/sim-node-coins-2023:latest
+            resources:
+              requests:
+                memory: "10Gi"
+                cpu: "4"
+                ephemeral-storage: "1500Mi"
+              limits:
+                memory: "11Gi"
+                cpu: "4"
+                ephemeral-storage: "2Gi"
+            ports:
+              - name: p2p
+                containerPort: 30333
+              - name: websocket
+                containerPort: 9944
+              - name: rpc
+                containerPort: 9933
+              - name: prometheus
+                containerPort: 9615
+            command:
+              - bash
+            args:
+              - -c
+              - |
+                    rm -rf /datas/substrate-18/*;
+                    /node-template key insert \
+                        --base-path /datas/substrate-18 \
+                        --chain local \
+                        --key-type aura \
+                        --scheme Sr25519 \
+                        --suri "0x79d2c43ca8f5495e912b0b5ac1a4aad999f103f20829f7b89774860a291a8e5b";
+                    /node-template key insert \
+                        --base-path /datas/substrate-18 \
+                        --chain local \
+                        --key-type gran \
+                        --scheme Ed25519 \
+                        --suri "0x79d2c43ca8f5495e912b0b5ac1a4aad999f103f20829f7b89774860a291a8e5b";
+                    ls -l /datas/substrate-18/chains/local_testnet/keystore;
+                    RUST_LOG=runtime=debug
+                    /node-template \
+                        --base-path /datas/substrate-18 \
+                        --name Node18 \
+                        --chain /genesis/customSpecRaw.json \
+                        --keystore-path /datas/substrate-18/chains/local_testnet/keystore/ \
+                        --node-key 79d2c43ca8f5495e912b0b5ac1a4aad999f103f20829f7b89774860a291a8e5b \
+                        --port 30333 \
+                        --ws-port 9944 \
+                        --rpc-port 9933 \
+                        --unsafe-ws-external \
+                        --unsafe-rpc-external \
+                        --rpc-cors=all \
+                        --prometheus-external \
+                        --log info \
+                        --wasm-execution Compiled \
+                        --ws-max-connections 1000 \
+                        --pool-limit 10000 \
+                        --pool-kbytes 125000 \
+                        --max-runtime-instances 100 \
+                        --state-cache-size 2147483648 \
+                        --validator \
+                        --bootnodes /ip4/$SUBSTRATE_0_SERVICE_HOST/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp
+                    
+            volumeMounts:
+              - name: substrate-data-18
+                mountPath: /datas/substrate-18
+              - name: substrate-genesis-18
+                mountPath: /genesis/
+
+        volumes:
+          - name: substrate-data-18
+            persistentVolumeClaim:
+              claimName: substrate-data-18
+          - name: substrate-genesis-18
+            configMap:
+              name: chain-spec
+              items:
+              - key: customSpecRaw.json
+                path: customSpecRaw.json
+
+#---------------------------------=NODES SERVICES 18=---------------------------------------
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: substrate-18
+    namespace: multichain-net
+  spec:
+    type: ClusterIP
+    selector:
+      name: substrate-18
+    ports:
+      - name: "30333"
+        protocol: TCP
+        port: 30333
+        targetPort: 30333
+      - name: "9944"
+        protocol: TCP
+        port: 9944
+        targetPort: 9944
+      - name: "9933"
+        protocol: TCP
+        port: 9933
+        targetPort: 9933
+      - name: "9615"
+        protocol: TCP
+        port: 9615
+        targetPort: 9615
+#---------------------------------=NODES PERSISTANT VOLUME 18=---------------------------------------
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    name: substrate-18
+    labels:
+      type: local
+  spec:
+    storageClassName: manual
+    capacity:
+      storage: 50Gi
+    accessModes:
+      - ReadWriteOnce
+    persistentVolumeReclaimPolicy: Recycle
+    hostPath:
+      path: "/datas/substrate-18"
+#--------------------------=PERSISTENT VOLUME CLAIM 18=------------------------------
+
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    labels:
+      app: substrate-data
+    name: substrate-data-18
+    namespace: multichain-net
+  spec:
+    storageClassName: manual
+    accessModes:
+    - ReadWriteOnce
+    resources:
+     requests:
+        storage: 45Gi
+
+# --------------------------=== POD DEPLOYMENT 19 ===--------------------------
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: node-19
+    namespace: multichain-net
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        name: substrate-19
+    template:
+      metadata:
+        labels:
+          name: substrate-19
+          serviceSelector: substrate-node
+      spec:
+        securityContext:
+          fsGroup: 101
+        containers:
+          - name: substrate-node
+            image: projetsim/sim-node-coins-2023:latest
+            resources:
+              requests:
+                memory: "10Gi"
+                cpu: "4"
+                ephemeral-storage: "1500Mi"
+              limits:
+                memory: "11Gi"
+                cpu: "4"
+                ephemeral-storage: "2Gi"
+            ports:
+              - name: p2p
+                containerPort: 30333
+              - name: websocket
+                containerPort: 9944
+              - name: rpc
+                containerPort: 9933
+              - name: prometheus
+                containerPort: 9615
+            command:
+              - bash
+            args:
+              - -c
+              - |
+                    rm -rf /datas/substrate-19/*;
+                    /node-template key insert \
+                        --base-path /datas/substrate-19 \
+                        --chain local \
+                        --key-type aura \
+                        --scheme Sr25519 \
+                        --suri "0x8aaddabbcc0ee986fd035fa98727b8e7aba2873d68dce13063f19462b5e0ad6d";
+                    /node-template key insert \
+                        --base-path /datas/substrate-19 \
+                        --chain local \
+                        --key-type gran \
+                        --scheme Ed25519 \
+                        --suri "0x8aaddabbcc0ee986fd035fa98727b8e7aba2873d68dce13063f19462b5e0ad6d";
+                    ls -l /datas/substrate-19/chains/local_testnet/keystore;
+                    RUST_LOG=runtime=debug
+                    /node-template \
+                        --base-path /datas/substrate-19 \
+                        --name Node19 \
+                        --chain /genesis/customSpecRaw.json \
+                        --keystore-path /datas/substrate-19/chains/local_testnet/keystore/ \
+                        --node-key 8aaddabbcc0ee986fd035fa98727b8e7aba2873d68dce13063f19462b5e0ad6d \
+                        --port 30333 \
+                        --ws-port 9944 \
+                        --rpc-port 9933 \
+                        --unsafe-ws-external \
+                        --unsafe-rpc-external \
+                        --rpc-cors=all \
+                        --prometheus-external \
+                        --log info \
+                        --wasm-execution Compiled \
+                        --ws-max-connections 1000 \
+                        --pool-limit 10000 \
+                        --pool-kbytes 125000 \
+                        --max-runtime-instances 100 \
+                        --state-cache-size 2147483648 \
+                        --validator \
+                        --bootnodes /ip4/$SUBSTRATE_0_SERVICE_HOST/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp
+                    
+            volumeMounts:
+              - name: substrate-data-19
+                mountPath: /datas/substrate-19
+              - name: substrate-genesis-19
+                mountPath: /genesis/
+
+        volumes:
+          - name: substrate-data-19
+            persistentVolumeClaim:
+              claimName: substrate-data-19
+          - name: substrate-genesis-19
+            configMap:
+              name: chain-spec
+              items:
+              - key: customSpecRaw.json
+                path: customSpecRaw.json
+
+#---------------------------------=NODES SERVICES 19=---------------------------------------
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: substrate-19
+    namespace: multichain-net
+  spec:
+    type: ClusterIP
+    selector:
+      name: substrate-19
+    ports:
+      - name: "30333"
+        protocol: TCP
+        port: 30333
+        targetPort: 30333
+      - name: "9944"
+        protocol: TCP
+        port: 9944
+        targetPort: 9944
+      - name: "9933"
+        protocol: TCP
+        port: 9933
+        targetPort: 9933
+      - name: "9615"
+        protocol: TCP
+        port: 9615
+        targetPort: 9615
+#---------------------------------=NODES PERSISTANT VOLUME 19=---------------------------------------
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    name: substrate-19
+    labels:
+      type: local
+  spec:
+    storageClassName: manual
+    capacity:
+      storage: 50Gi
+    accessModes:
+      - ReadWriteOnce
+    persistentVolumeReclaimPolicy: Recycle
+    hostPath:
+      path: "/datas/substrate-19"
+#--------------------------=PERSISTENT VOLUME CLAIM 19=------------------------------
+
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    labels:
+      app: substrate-data
+    name: substrate-data-19
+    namespace: multichain-net
+  spec:
+    storageClassName: manual
+    accessModes:
+    - ReadWriteOnce
+    resources:
+     requests:
+        storage: 45Gi
+
+# --------------------------=== POD DEPLOYMENT 20 ===--------------------------
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: node-20
+    namespace: multichain-net
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        name: substrate-20
+    template:
+      metadata:
+        labels:
+          name: substrate-20
+          serviceSelector: substrate-node
+      spec:
+        securityContext:
+          fsGroup: 101
+        containers:
+          - name: substrate-node
+            image: projetsim/sim-node-coins-2023:latest
+            resources:
+              requests:
+                memory: "10Gi"
+                cpu: "4"
+                ephemeral-storage: "1500Mi"
+              limits:
+                memory: "11Gi"
+                cpu: "4"
+                ephemeral-storage: "2Gi"
+            ports:
+              - name: p2p
+                containerPort: 30333
+              - name: websocket
+                containerPort: 9944
+              - name: rpc
+                containerPort: 9933
+              - name: prometheus
+                containerPort: 9615
+            command:
+              - bash
+            args:
+              - -c
+              - |
+                    rm -rf /datas/substrate-20/*;
+                    /node-template key insert \
+                        --base-path /datas/substrate-20 \
+                        --chain local \
+                        --key-type aura \
+                        --scheme Sr25519 \
+                        --suri "0x58b0dfb79da6025ca0123cd9e8d116275c1a259ca8c0054aa4a382826c404196";
+                    /node-template key insert \
+                        --base-path /datas/substrate-20 \
+                        --chain local \
+                        --key-type gran \
+                        --scheme Ed25519 \
+                        --suri "0x58b0dfb79da6025ca0123cd9e8d116275c1a259ca8c0054aa4a382826c404196";
+                    ls -l /datas/substrate-20/chains/local_testnet/keystore;
+                    RUST_LOG=runtime=debug
+                    /node-template \
+                        --base-path /datas/substrate-20 \
+                        --name Node20 \
+                        --chain /genesis/customSpecRaw.json \
+                        --keystore-path /datas/substrate-20/chains/local_testnet/keystore/ \
+                        --node-key 58b0dfb79da6025ca0123cd9e8d116275c1a259ca8c0054aa4a382826c404196 \
+                        --port 30333 \
+                        --ws-port 9944 \
+                        --rpc-port 9933 \
+                        --unsafe-ws-external \
+                        --unsafe-rpc-external \
+                        --rpc-cors=all \
+                        --prometheus-external \
+                        --log info \
+                        --wasm-execution Compiled \
+                        --ws-max-connections 1000 \
+                        --pool-limit 10000 \
+                        --pool-kbytes 125000 \
+                        --max-runtime-instances 100 \
+                        --state-cache-size 2147483648 \
+                        --validator \
+                        --bootnodes /ip4/$SUBSTRATE_0_SERVICE_HOST/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp
+                    
+            volumeMounts:
+              - name: substrate-data-20
+                mountPath: /datas/substrate-20
+              - name: substrate-genesis-20
+                mountPath: /genesis/
+
+        volumes:
+          - name: substrate-data-20
+            persistentVolumeClaim:
+              claimName: substrate-data-20
+          - name: substrate-genesis-20
+            configMap:
+              name: chain-spec
+              items:
+              - key: customSpecRaw.json
+                path: customSpecRaw.json
+
+#---------------------------------=NODES SERVICES 20=---------------------------------------
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: substrate-20
+    namespace: multichain-net
+  spec:
+    type: ClusterIP
+    selector:
+      name: substrate-20
+    ports:
+      - name: "30333"
+        protocol: TCP
+        port: 30333
+        targetPort: 30333
+      - name: "9944"
+        protocol: TCP
+        port: 9944
+        targetPort: 9944
+      - name: "9933"
+        protocol: TCP
+        port: 9933
+        targetPort: 9933
+      - name: "9615"
+        protocol: TCP
+        port: 9615
+        targetPort: 9615
+#---------------------------------=NODES PERSISTANT VOLUME 20=---------------------------------------
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    name: substrate-20
+    labels:
+      type: local
+  spec:
+    storageClassName: manual
+    capacity:
+      storage: 50Gi
+    accessModes:
+      - ReadWriteOnce
+    persistentVolumeReclaimPolicy: Recycle
+    hostPath:
+      path: "/datas/substrate-20"
+#--------------------------=PERSISTENT VOLUME CLAIM 20=------------------------------
+
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    labels:
+      app: substrate-data
+    name: substrate-data-20
+    namespace: multichain-net
+  spec:
+    storageClassName: manual
+    accessModes:
+    - ReadWriteOnce
+    resources:
+     requests:
+        storage: 45Gi
+
+# --------------------------=== POD DEPLOYMENT 21 ===--------------------------
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: node-21
+    namespace: multichain-net
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        name: substrate-21
+    template:
+      metadata:
+        labels:
+          name: substrate-21
+          serviceSelector: substrate-node
+      spec:
+        securityContext:
+          fsGroup: 101
+        containers:
+          - name: substrate-node
+            image: projetsim/sim-node-coins-2023:latest
+            resources:
+              requests:
+                memory: "10Gi"
+                cpu: "4"
+                ephemeral-storage: "1500Mi"
+              limits:
+                memory: "11Gi"
+                cpu: "4"
+                ephemeral-storage: "2Gi"
+            ports:
+              - name: p2p
+                containerPort: 30333
+              - name: websocket
+                containerPort: 9944
+              - name: rpc
+                containerPort: 9933
+              - name: prometheus
+                containerPort: 9615
+            command:
+              - bash
+            args:
+              - -c
+              - |
+                    rm -rf /datas/substrate-21/*;
+                    /node-template key insert \
+                        --base-path /datas/substrate-21 \
+                        --chain local \
+                        --key-type aura \
+                        --scheme Sr25519 \
+                        --suri "0x0238ef3b7881cc2536f0eb43373ef8f9599de55f45aa034d81f0a0836afd5438";
+                    /node-template key insert \
+                        --base-path /datas/substrate-21 \
+                        --chain local \
+                        --key-type gran \
+                        --scheme Ed25519 \
+                        --suri "0x0238ef3b7881cc2536f0eb43373ef8f9599de55f45aa034d81f0a0836afd5438";
+                    ls -l /datas/substrate-21/chains/local_testnet/keystore;
+                    RUST_LOG=runtime=debug
+                    /node-template \
+                        --base-path /datas/substrate-21 \
+                        --name Node21 \
+                        --chain /genesis/customSpecRaw.json \
+                        --keystore-path /datas/substrate-21/chains/local_testnet/keystore/ \
+                        --node-key 0238ef3b7881cc2536f0eb43373ef8f9599de55f45aa034d81f0a0836afd5438 \
+                        --port 30333 \
+                        --ws-port 9944 \
+                        --rpc-port 9933 \
+                        --unsafe-ws-external \
+                        --unsafe-rpc-external \
+                        --rpc-cors=all \
+                        --prometheus-external \
+                        --log info \
+                        --wasm-execution Compiled \
+                        --ws-max-connections 1000 \
+                        --pool-limit 10000 \
+                        --pool-kbytes 125000 \
+                        --max-runtime-instances 100 \
+                        --state-cache-size 2147483648 \
+                        --validator \
+                        --bootnodes /ip4/$SUBSTRATE_0_SERVICE_HOST/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp
+                    
+            volumeMounts:
+              - name: substrate-data-21
+                mountPath: /datas/substrate-21
+              - name: substrate-genesis-21
+                mountPath: /genesis/
+
+        volumes:
+          - name: substrate-data-21
+            persistentVolumeClaim:
+              claimName: substrate-data-21
+          - name: substrate-genesis-21
+            configMap:
+              name: chain-spec
+              items:
+              - key: customSpecRaw.json
+                path: customSpecRaw.json
+
+#---------------------------------=NODES SERVICES 21=---------------------------------------
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: substrate-21
+    namespace: multichain-net
+  spec:
+    type: ClusterIP
+    selector:
+      name: substrate-21
+    ports:
+      - name: "30333"
+        protocol: TCP
+        port: 30333
+        targetPort: 30333
+      - name: "9944"
+        protocol: TCP
+        port: 9944
+        targetPort: 9944
+      - name: "9933"
+        protocol: TCP
+        port: 9933
+        targetPort: 9933
+      - name: "9615"
+        protocol: TCP
+        port: 9615
+        targetPort: 9615
+#---------------------------------=NODES PERSISTANT VOLUME 21=---------------------------------------
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    name: substrate-21
+    labels:
+      type: local
+  spec:
+    storageClassName: manual
+    capacity:
+      storage: 50Gi
+    accessModes:
+      - ReadWriteOnce
+    persistentVolumeReclaimPolicy: Recycle
+    hostPath:
+      path: "/datas/substrate-21"
+#--------------------------=PERSISTENT VOLUME CLAIM 21=------------------------------
+
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    labels:
+      app: substrate-data
+    name: substrate-data-21
+    namespace: multichain-net
+  spec:
+    storageClassName: manual
+    accessModes:
+    - ReadWriteOnce
+    resources:
+     requests:
+        storage: 45Gi
+
+# --------------------------=== POD DEPLOYMENT 22 ===--------------------------
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: node-22
+    namespace: multichain-net
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        name: substrate-22
+    template:
+      metadata:
+        labels:
+          name: substrate-22
+          serviceSelector: substrate-node
+      spec:
+        securityContext:
+          fsGroup: 101
+        containers:
+          - name: substrate-node
+            image: projetsim/sim-node-coins-2023:latest
+            resources:
+              requests:
+                memory: "10Gi"
+                cpu: "4"
+                ephemeral-storage: "1500Mi"
+              limits:
+                memory: "11Gi"
+                cpu: "4"
+                ephemeral-storage: "2Gi"
+            ports:
+              - name: p2p
+                containerPort: 30333
+              - name: websocket
+                containerPort: 9944
+              - name: rpc
+                containerPort: 9933
+              - name: prometheus
+                containerPort: 9615
+            command:
+              - bash
+            args:
+              - -c
+              - |
+                    rm -rf /datas/substrate-22/*;
+                    /node-template key insert \
+                        --base-path /datas/substrate-22 \
+                        --chain local \
+                        --key-type aura \
+                        --scheme Sr25519 \
+                        --suri "0x24c93978f4661b13832768394d6d4462124fa45ab1fd9df7297c9bfc35ec808e";
+                    /node-template key insert \
+                        --base-path /datas/substrate-22 \
+                        --chain local \
+                        --key-type gran \
+                        --scheme Ed25519 \
+                        --suri "0x24c93978f4661b13832768394d6d4462124fa45ab1fd9df7297c9bfc35ec808e";
+                    ls -l /datas/substrate-22/chains/local_testnet/keystore;
+                    RUST_LOG=runtime=debug
+                    /node-template \
+                        --base-path /datas/substrate-22 \
+                        --name Node22 \
+                        --chain /genesis/customSpecRaw.json \
+                        --keystore-path /datas/substrate-22/chains/local_testnet/keystore/ \
+                        --node-key 24c93978f4661b13832768394d6d4462124fa45ab1fd9df7297c9bfc35ec808e \
+                        --port 30333 \
+                        --ws-port 9944 \
+                        --rpc-port 9933 \
+                        --unsafe-ws-external \
+                        --unsafe-rpc-external \
+                        --rpc-cors=all \
+                        --prometheus-external \
+                        --log info \
+                        --wasm-execution Compiled \
+                        --ws-max-connections 1000 \
+                        --pool-limit 10000 \
+                        --pool-kbytes 125000 \
+                        --max-runtime-instances 100 \
+                        --state-cache-size 2147483648 \
+                        --validator \
+                        --bootnodes /ip4/$SUBSTRATE_0_SERVICE_HOST/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp
+                    
+            volumeMounts:
+              - name: substrate-data-22
+                mountPath: /datas/substrate-22
+              - name: substrate-genesis-22
+                mountPath: /genesis/
+
+        volumes:
+          - name: substrate-data-22
+            persistentVolumeClaim:
+              claimName: substrate-data-22
+          - name: substrate-genesis-22
+            configMap:
+              name: chain-spec
+              items:
+              - key: customSpecRaw.json
+                path: customSpecRaw.json
+
+#---------------------------------=NODES SERVICES 22=---------------------------------------
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: substrate-22
+    namespace: multichain-net
+  spec:
+    type: ClusterIP
+    selector:
+      name: substrate-22
+    ports:
+      - name: "30333"
+        protocol: TCP
+        port: 30333
+        targetPort: 30333
+      - name: "9944"
+        protocol: TCP
+        port: 9944
+        targetPort: 9944
+      - name: "9933"
+        protocol: TCP
+        port: 9933
+        targetPort: 9933
+      - name: "9615"
+        protocol: TCP
+        port: 9615
+        targetPort: 9615
+#---------------------------------=NODES PERSISTANT VOLUME 22=---------------------------------------
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    name: substrate-22
+    labels:
+      type: local
+  spec:
+    storageClassName: manual
+    capacity:
+      storage: 50Gi
+    accessModes:
+      - ReadWriteOnce
+    persistentVolumeReclaimPolicy: Recycle
+    hostPath:
+      path: "/datas/substrate-22"
+#--------------------------=PERSISTENT VOLUME CLAIM 22=------------------------------
+
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    labels:
+      app: substrate-data
+    name: substrate-data-22
+    namespace: multichain-net
+  spec:
+    storageClassName: manual
+    accessModes:
+    - ReadWriteOnce
+    resources:
+     requests:
+        storage: 45Gi
+
+# --------------------------=== POD DEPLOYMENT 23 ===--------------------------
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: node-23
+    namespace: multichain-net
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        name: substrate-23
+    template:
+      metadata:
+        labels:
+          name: substrate-23
+          serviceSelector: substrate-node
+      spec:
+        securityContext:
+          fsGroup: 101
+        containers:
+          - name: substrate-node
+            image: projetsim/sim-node-coins-2023:latest
+            resources:
+              requests:
+                memory: "10Gi"
+                cpu: "4"
+                ephemeral-storage: "1500Mi"
+              limits:
+                memory: "11Gi"
+                cpu: "4"
+                ephemeral-storage: "2Gi"
+            ports:
+              - name: p2p
+                containerPort: 30333
+              - name: websocket
+                containerPort: 9944
+              - name: rpc
+                containerPort: 9933
+              - name: prometheus
+                containerPort: 9615
+            command:
+              - bash
+            args:
+              - -c
+              - |
+                    rm -rf /datas/substrate-23/*;
+                    /node-template key insert \
+                        --base-path /datas/substrate-23 \
+                        --chain local \
+                        --key-type aura \
+                        --scheme Sr25519 \
+                        --suri "0x46039370d07a205d507d169113a7f92550b056c67c0e097a87ef1b177590fedb";
+                    /node-template key insert \
+                        --base-path /datas/substrate-23 \
+                        --chain local \
+                        --key-type gran \
+                        --scheme Ed25519 \
+                        --suri "0x46039370d07a205d507d169113a7f92550b056c67c0e097a87ef1b177590fedb";
+                    ls -l /datas/substrate-23/chains/local_testnet/keystore;
+                    RUST_LOG=runtime=debug
+                    /node-template \
+                        --base-path /datas/substrate-23 \
+                        --name Node23 \
+                        --chain /genesis/customSpecRaw.json \
+                        --keystore-path /datas/substrate-23/chains/local_testnet/keystore/ \
+                        --node-key 46039370d07a205d507d169113a7f92550b056c67c0e097a87ef1b177590fedb \
+                        --port 30333 \
+                        --ws-port 9944 \
+                        --rpc-port 9933 \
+                        --unsafe-ws-external \
+                        --unsafe-rpc-external \
+                        --rpc-cors=all \
+                        --prometheus-external \
+                        --log info \
+                        --wasm-execution Compiled \
+                        --ws-max-connections 1000 \
+                        --pool-limit 10000 \
+                        --pool-kbytes 125000 \
+                        --max-runtime-instances 100 \
+                        --state-cache-size 2147483648 \
+                        --validator \
+                        --bootnodes /ip4/$SUBSTRATE_0_SERVICE_HOST/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp
+                    
+            volumeMounts:
+              - name: substrate-data-23
+                mountPath: /datas/substrate-23
+              - name: substrate-genesis-23
+                mountPath: /genesis/
+
+        volumes:
+          - name: substrate-data-23
+            persistentVolumeClaim:
+              claimName: substrate-data-23
+          - name: substrate-genesis-23
+            configMap:
+              name: chain-spec
+              items:
+              - key: customSpecRaw.json
+                path: customSpecRaw.json
+
+#---------------------------------=NODES SERVICES 23=---------------------------------------
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: substrate-23
+    namespace: multichain-net
+  spec:
+    type: ClusterIP
+    selector:
+      name: substrate-23
+    ports:
+      - name: "30333"
+        protocol: TCP
+        port: 30333
+        targetPort: 30333
+      - name: "9944"
+        protocol: TCP
+        port: 9944
+        targetPort: 9944
+      - name: "9933"
+        protocol: TCP
+        port: 9933
+        targetPort: 9933
+      - name: "9615"
+        protocol: TCP
+        port: 9615
+        targetPort: 9615
+#---------------------------------=NODES PERSISTANT VOLUME 23=---------------------------------------
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    name: substrate-23
+    labels:
+      type: local
+  spec:
+    storageClassName: manual
+    capacity:
+      storage: 50Gi
+    accessModes:
+      - ReadWriteOnce
+    persistentVolumeReclaimPolicy: Recycle
+    hostPath:
+      path: "/datas/substrate-23"
+#--------------------------=PERSISTENT VOLUME CLAIM 23=------------------------------
+
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    labels:
+      app: substrate-data
+    name: substrate-data-23
+    namespace: multichain-net
+  spec:
+    storageClassName: manual
+    accessModes:
+    - ReadWriteOnce
+    resources:
+     requests:
+        storage: 45Gi
+
 #--------------------------=ONE SERVICE FOR ALL NODE (websocket)=--------------------------------
 
 - apiVersion: v1
