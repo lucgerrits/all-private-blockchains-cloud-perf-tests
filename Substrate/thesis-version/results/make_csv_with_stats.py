@@ -107,3 +107,7 @@ def generate_csv(prefix_path, parachain, nb_collators):
 
 generate_csv("test_1", "", "4nb_nodes")
 generate_csv("test_1", "", "8nb_nodes")
+generate_csv("test_1", "", "12nb_nodes")
+generate_csv("test_1", "", "16nb_nodes")
+generate_csv("test_1", "", "20nb_nodes")
+generate_csv("test_1", "", "24nb_nodes")
