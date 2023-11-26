@@ -78,8 +78,11 @@ def generate_csv(prefix_path, parachain, nb_collators):
             # The test delay is the difference between the start time and the end time of the test
             test_delay = round((lastest_test_blocktime - test_delay)/1000, 1)
             # print("Test delay: {}s".format(test_delay))
-            percentage_failed_tx = "{}%".format(round(
-                (1 - (success_tx/total_tx))*100, 2)) if round((1 - (success_tx/total_tx))*100, 2) > 0.01 else ""
+            percentage_failed_tx = "{}".format(round(
+                (1 - (success_tx/total_tx))*100, 2)) if round((1 - (success_tx/total_tx))*100, 2) > 0.01 else "0.00"
+            # percentage_failed_tx_log_disp = "{}".format(round(
+            #     (1 - (success_tx/total_tx))*100, 2)) if round((1 - (success_tx/total_tx))*100, 2) > 0.01 else "0.001"
+            percentage_failed_tx_log_disp = total_tx - success_tx if total_tx - success_tx > 0 else 0.001
             failed_tx = total_tx - success_tx
             if (failed_tx < 0):
                 print("{}: {}".format(file.split("/")[-1], failed_tx))
@@ -93,7 +96,7 @@ def generate_csv(prefix_path, parachain, nb_collators):
             # Append the current file's name TPS and maximum "tps" value to the results list
             results.append([extract_int_tps(file), max_tps, avg_tps, max_blocktime,
                            avg_blocktime, tps_var, tps_std, blocktime_var, blocktime_std, success_tx, 
-                           failed_tx, percentage_failed_tx, test_delay, expected_delay])
+                           failed_tx, percentage_failed_tx, test_delay, expected_delay, percentage_failed_tx_log_disp])
 
     # Write the results to a new CSV file
     with open(f'./block_logs/compiled/{prefix_path}_{parachain}_{nb_collators}_stats_values.csv', 'w', newline='') as f:
@@ -101,11 +104,11 @@ def generate_csv(prefix_path, parachain, nb_collators):
         writer = csv.writer(f)
         writer.writerow(['Input TPS', 'Max Output TPS', 'Avg Output TPS', 'Max Block Time', 'Avg Block Time',
                         'TPS Variance', 'TPS Standard Deviation', 'Block Time Variance', 'Block Time Standard Deviation',
-                         'Success TX', 'Failed TX', 'Percentage Failed TX', 'Test Delay (s)', 'Expected Delay (s)'])
+                         'Success TX', 'Failed TX', 'Percentage Failed TX', 'Test Delay (s)', 'Expected Delay (s)', 'Failed TX (for display log)'])
         writer.writerows(results)
 
 
-generate_csv("test_1", "", "4nb_nodes")
+generate_csv("test_1", "", "_4nb_nodes")
 generate_csv("test_1", "", "8nb_nodes")
 generate_csv("test_1", "", "12nb_nodes")
 generate_csv("test_1", "", "16nb_nodes")
