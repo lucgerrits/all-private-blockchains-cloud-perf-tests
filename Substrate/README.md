@@ -48,14 +48,6 @@ Use: [https://polkadot.js.org/apps/#/extrinsics](https://polkadot.js.org/apps/#/
 
 To actually view the data stored on-chain you can request state data in the polkadot-js telemetry browser app: [https://polkadot.js.org/apps/#/chainstate](https://polkadot.js.org/apps/#/chainstate)
 
-
-### HTTP REST API for Substrate
-
-I added at the last minute an HTTP REST API tool that allows us to communicate with one node using single HTTP requests.
-The REST API is built by Parity and is called [substrate-api-sidecar](https://github.com/paritytech/substrate-api-sidecar).
-
-More info about the endpoints: [https://paritytech.github.io/substrate-api-sidecar/dist/](https://paritytech.github.io/substrate-api-sidecar/dist/)
-
 ### Other
 
 ./Substrate/thesis-version/cloud-deployments/rancher-v2.4.10/rancher kubectl get pods -n multichain-net
