@@ -1,0 +1,6 @@
+{
+    "rust-analyzer.linkedProjects": [
+        "./Substrate/rust-client-v2/Cargo.toml",
+        "./Substrate/thesis-version/substrate-node-template-polkadot-v0.9.35/Cargo.toml"
+    ]
+}
