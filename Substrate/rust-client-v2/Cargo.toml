@@ -1,0 +1,45 @@
+[package]
+name = "substrate-client"
+version = "1.0.0"
+authors = ["Luc Gerrits <Luc.GERRITS@univ-cotedazur.fr>"]
+edition = "2018"
+
+[dependencies]
+codec = { package = "parity-scale-codec", version = "3.2", features = [
+    'derive',
+] }
+env_logger = "0.10.0"
+log = { version = "0.4.14" }
+serde_json = { version = "1.0.79" }
+tokio = { version = "1.23", features = ["rt-multi-thread", "macros", "time"] }
+wabt = "0.10.0"
+
+# Substrate dependencies
+frame-support = { git = "https://github.com/paritytech/substrate.git", branch = "polkadot-v1.0.0" }
+frame-system = { git = "https://github.com/paritytech/substrate.git", branch = "polkadot-v1.0.0" }
+sp-core = { features = [
+    "full_crypto",
+], git = "https://github.com/paritytech/substrate.git", branch = "polkadot-v1.0.0" }
+sp-keyring = { git = "https://github.com/paritytech/substrate.git", branch = "polkadot-v1.0.0" }
+sp-runtime = { git = "https://github.com/paritytech/substrate.git", branch = "polkadot-v1.0.0" }
+sp-version = { git = "https://github.com/paritytech/substrate.git", branch = "polkadot-v1.0.0" }
+
+substrate-api-client = { git = "https://github.com/scs/substrate-api-client.git", branch = "release-polkadot-v1.0.0", features = [
+    "ws-client",
+] }
+
+
+node-template-runtime = { path = "../thesis-version/substrate-node-template-polkadot-v0.9.35/runtime" }
+
+[dependencies.clap]
+version = "2.33"
+features = ["yaml"]
+
+
+# [[bin]]
+# name = "get_storage"
+# path = "src/get_storage.rs"
+
+[[bin]]
+name = "set_storage"
+path = "src/set_storage.rs"
