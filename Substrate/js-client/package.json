@@ -1,0 +1,13 @@
+{
+    "name": "polkadot-js-report-accident",
+    "version": "1.0.0",
+    "description": "A JavaScript program to send an extrinsic to report an accident using Polkadot.js API",
+    "main": "report_accident.js",
+    "scripts": {
+        "start": "node report_accident.js"
+    },
+    "dependencies": {
+        "@polkadot/api": "^9.13.0",
+        "@polkadot/keyring": "^10.3.1"
+    }
+}
